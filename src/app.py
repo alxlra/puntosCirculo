@@ -7,9 +7,9 @@ from matplotlib import pyplot as plt
 plt.style.use("ggplot")
 
 st.title("📐 Generador de puntos de un polígono")
-center_x = st.number_input("Escribe la coordenada X del centro:", min_value=2, max_value=20, value=6)
-center_y = st.number_input("Escribe la coordenada Y del centro:", min_value=2, max_value=20, value=6)
-radio = st.number_input("Escribe el radio:", min_value=1, max_value=20, value=4)
+center_x = st.slider("Coordenada X del centro:", min_value=2, max_value=20, value=6)
+center_y = st.slider("Coordenada Y del centro:", min_value=2, max_value=20, value=6)
+radio = st.slider("Radio:", min_value=1, max_value=10, value=4)
 
 puntos = st.slider("Número de puntos:", min_value=4, max_value=30, value=15)
 
