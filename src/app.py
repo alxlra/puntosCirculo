@@ -4,10 +4,7 @@ import math
 import pandas as pd
 from matplotlib import pyplot as plt
 
-def puntoX(center_x, center_y, y,radio, pos=True):
-    if pos:
-        return math.sqrt(radio**2 - (y-center_y)**2) + center_x
-    return -math.sqrt(radio**2 - (y-center_y)**2) + center_x
+plt.style.use("ggplot")
 
 st.title("📐 Generador de puntos de un polígono")
 center_x = st.number_input("Escribe la coordenada X del centro:", min_value=2, max_value=20, value=6)
