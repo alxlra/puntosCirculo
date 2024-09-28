@@ -2,6 +2,7 @@
 import streamlit as st
 import math
 import pandas as pd
+from matplotlib import pyplot as plt
 
 def puntoX(center_x, center_y, y,radio, pos=True):
     if pos:
@@ -22,7 +23,7 @@ if "df_dist" not in st.session_state:
     st.session_state.df_dist = pd.DataFrame(columns=["Movimiento X", "Movimiento Y"])
 
 if st.button("✔ Generar puntos"):
-    #cálclos
+    #cálculos
     angulo_lados = (2*math.pi)/puntos #calcula el ánguo de cada lado
 
     df = pd.DataFrame(columns=["X", "Y"]) #dataframe para guardar los puntos
@@ -44,6 +45,7 @@ if st.button("✔ Generar puntos"):
         df_dist.loc[len(df_dist)] = [dist_x, dist_y] #append
     st.session_state.df_dist = df_dist
 
+# ------------
 placeholder = st.empty() #contenedor dinámico
 
 #si existe en sesión, imprime resultados
@@ -53,6 +55,8 @@ if not st.session_state.df.empty and not st.session_state.df_dist.empty:
     df_dist = st.session_state.df_dist
     with placeholder.container():
         st.divider()
+
+
         col1,col2 = st.columns(2)
         with col1:
             st.subheader("Puntos generados")
@@ -71,13 +75,26 @@ if not st.session_state.df.empty and not st.session_state.df_dist.empty:
             #st.button("Descargar movimientos", df.to_csv("movimientos.csv", index=False))
             csv2 = df_dist.to_csv(index=False)  # Convertir el dataframe a CSV
             st.download_button(
-                label="💾 Descargar puntos",
+                label="💾 Descargar movimientos",
                 data=csv2,
                 file_name="movimientos.csv",
                 mime="text/csv"
             )
+        st.divider()
+        #gráfica de los puntos
+        st.subheader("Gráfica de los puntos generados")
+        # Crear una gráfica de dispersión
+        plt.figure(figsize=(8, 8))
+        plt.scatter(df["X"], df["Y"], color='blue', marker='o')
+        plt.title("Gráfica de Dispersión")
+        plt.xlabel("X")
+        plt.ylabel("Y")
+        plt.grid(True)
 
-        if st.button("🗑 Borrar tablas"): #borra de sesión
+        # Mostrar la gráfica en Streamlit
+        st.pyplot(plt)
+
+        if st.button("✖ Borrar tablas"): #borra de sesión
             del st.session_state["df"]
             del st.session_state["df_dist"]
             placeholder.empty()
