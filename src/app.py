@@ -50,7 +50,7 @@ def graficar_puntos(df):
 st.title("📐 Generador de puntos de un polígono")
 center_x = st.slider("Coordenada X del centro:", min_value=2, max_value=20, value=6)
 center_y = st.slider("Coordenada Y del centro:", min_value=2, max_value=20, value=6)
-radio = st.number_input("Radio:", min_value=1.0, max_value=10.0, value=4.0, value=0.0, format="%.2f")
+radio = st.number_input("Radio:", min_value=1.0, max_value=10.0, value=4.0, format="%.2f")
 
 puntos = st.slider("Número de puntos:", min_value=4, max_value=30, value=15)
 
