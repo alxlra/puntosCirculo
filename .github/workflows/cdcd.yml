@@ -42,9 +42,14 @@ jobs:
           git config --global user.name "GitHub Action deploy"
           git config --global user.email "action@github.com"
 
-      - name: Merge `dev` into `main`
+      - name: Fetch main branch
         run: |
           git fetch origin main  # Trae la rama main al entorno
-          git checkout main
-          git merge dev --no-ff --allow-unrelated-histories -m "Merge branch 'dev' into main"
-          git push origin main
+          git checkout main  # Cambia a la rama main
+
+      - name: Overwrite main with dev
+        run: |
+          git checkout dev -- .  # Sobrescribe los archivos de main con los de dev
+          git add .  # Añade los cambios
+          git commit -m "Publicación de rama dev"  # Commit de los cambios
+          git push origin main  # Empuja los cambios a main
