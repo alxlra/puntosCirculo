@@ -6,7 +6,7 @@ from app import calcular_puntos, calcular_distancias
 
 def test_calcular_puntos():
     # Prueba para calcular puntos en un círculo con centro (0, 0), radio 1 y 4 puntos
-    center_x, center_y, radio, puntos = 6, 6, 1, 4
+    center_x, center_y, radio, puntos = 6, 6, 1.0, 4
     df = calcular_puntos(center_x, center_y, radio, puntos)
 
     # Verifica que el DataFrame tiene 4 puntos
