@@ -1,5 +1,5 @@
 name: CI/CD Pipeline
-
+# cuando se suve a dev se ahcen las pruebas y luego se copia a main
 on:
   push:
     branches:
