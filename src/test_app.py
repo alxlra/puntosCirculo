@@ -20,8 +20,7 @@ def test_calcular_puntos():
 
 def test_calcular_distancias():
     # Crea un DataFrame de puntos para la prueba
-    #data = {"X": [7, 6, 5, 6], "Y": [6, 7, 6, 5]}
-    data = {"X": [7, 6, 5, 6], "Y": [6, 7, 6, -5]}
+    data = {"X": [7, 6, 5, 6], "Y": [6, 7, 6, 5]}
     df = pd.DataFrame(data)
     puntos = 4
 
