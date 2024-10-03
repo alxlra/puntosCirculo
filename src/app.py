@@ -30,6 +30,7 @@ def calcular_distancias(df, puntos):
 
     return df_dist
 
+
 def graficar_puntos(df):
     plt.style.use("ggplot")
     st.subheader("Gráfica de los puntos generados")
@@ -48,11 +49,13 @@ def graficar_puntos(df):
 
 
 st.title("📐 Generador de puntos de un polígono")
-center_x = st.slider("Coordenada X del centro:", min_value=2, max_value=20, value=6)
-center_y = st.slider("Coordenada Y del centro:", min_value=2, max_value=20, value=6)
+
+
+center_x = st.number_input("Coordenada X del centro:", min_value=2.0, max_value=30.0, value=6.0, format="%.2f")
+center_y = st.number_input("Coordenada Y del centro:", min_value=2.0, max_value=30.0, value=6.0, format="%.2f")
 radio = st.number_input("Radio:", min_value=1.0, max_value=10.0, value=4.0, format="%.2f")
 
-puntos = st.slider("Número de puntos:", min_value=4, max_value=30, value=15)
+puntos = st.slider("Número de puntos:", min_value=3, max_value=30, value=15)
 
 if "df" not in st.session_state:
     st.session_state.df = pd.DataFrame(columns=["X", "Y"])
