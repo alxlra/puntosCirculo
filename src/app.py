@@ -45,7 +45,9 @@ def calcular_distancias_motor(df, z, ini_a, ini_b, ini_c):
 
     # Regreso al punto inicial
     last = len(df_dist)-1
-    df_dist.loc[len(df_dist)] = [dist_x - ini_a, dist_y- ini_b, 0- ini_c] 
+    #df_dist.loc[len(df_dist)] = [dist_x - ini_a, dist_y- ini_b, 0- ini_c] 
+    i=0
+    df_dist.loc[len(df_dist)] = [-(df.loc[i]["X"] + df.loc[i]["Y"] - ini_a), -(df.loc[i]["X"] - df.loc[i]["Y"] - ini_b), df.loc[i]["X"]-z - ini_c] 
 
 
     return df_dist
