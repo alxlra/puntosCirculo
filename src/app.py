@@ -69,18 +69,21 @@ def graficar_puntos(df):
 
 st.title("📐 Generador de puntos de un polígono")
 
+col1,col2 = st.columns(2)
+with col1:
+    center_x = st.number_input("Coordenada X del centro:", min_value=2.0, max_value=30.0, value=6.0, format="%.2f")
+    center_y = st.number_input("Coordenada Y del centro:", min_value=2.0, max_value=30.0, value=6.0, format="%.2f")
+    center_z = st.number_input("Coordenada Z del centro:", min_value=2.0, max_value=30.0, value=6.0, format="%.2f")
+with col2:
+    ini_a = st.number_input("Offset A:", min_value=2.0, max_value=30.0, value=6.0, format="%.2f")
+    ini_b = st.number_input("Offset B:", min_value=2.0, max_value=30.0, value=16.25, format="%.2f")
+    ini_c = st.number_input("Offset C:", min_value=2.0, max_value=30.0, value=2.5, format="%.2f")
 
-center_x = st.number_input("Coordenada X del centro:", min_value=2.0, max_value=30.0, value=6.0, format="%.2f")
-center_y = st.number_input("Coordenada Y del centro:", min_value=2.0, max_value=30.0, value=6.0, format="%.2f")
-center_z = st.number_input("Coordenada Z del centro:", min_value=2.0, max_value=30.0, value=6.0, format="%.2f")
 radio = st.number_input("Radio:", min_value=1.0, max_value=10.0, value=4.0, format="%.2f")
 
 puntos = st.slider("Número de puntos:", min_value=3, max_value=30, value=15)
 st.divider()
 
-ini_a = st.number_input("Offset A:", min_value=2.0, max_value=30.0, value=6.0, format="%.2f")
-ini_b = st.number_input("Offset B:", min_value=2.0, max_value=30.0, value=16.25, format="%.2f")
-ini_c = st.number_input("Offset C:", min_value=2.0, max_value=30.0, value=2.5, format="%.2f")
 
 #puntos = st.slider("Número de puntos:", min_value=3, max_value=30, value=15)
 
@@ -135,7 +138,7 @@ if not st.session_state.df.empty and not st.session_state.df_dist.empty:
                 mime="text/csv"
             )
         with col3:
-            st.subheader("Motores")
+            st.subheader("Carros")
             st.dataframe(df_dist_motor)
             #st.button("Descargar movimientos", df.to_csv("movimientos.csv", index=False))
             csv3 = df_dist_motor.to_csv(index=False)  # Convertir el dataframe a CSV
