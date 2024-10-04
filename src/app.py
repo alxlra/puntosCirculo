@@ -34,13 +34,13 @@ def calcular_distancias(df, puntos):
 def calcular_distancias_motor(df, z, ini_a, ini_b, ini_c):
     """Calcula las distancias de movimiento entre cada punto."""
     df_dist = pd.DataFrame(columns=["Movimiento X", "Movimiento Y", "Movimiento Z"])
-    df_dist.loc[len(df_dist)] = [df.loc[0]["X"] - df.loc[0]["Y"] - ini_a, df.loc[0]["X"] + df.loc[0]["Y"]- ini_b, df.loc[0]["X"] - z - ini_c]  # Movimiento inicial
+    df_dist.loc[len(df_dist)] = [df.loc[0]["Movimiento X"] - df.loc[0]["Movimiento Y"] - ini_a, df.loc[0]["Movimiento X"] + df.loc[0]["Movimiento Y"]- ini_b, df.loc[0]["Movimiento X"] - z - ini_c]  # Movimiento inicial
 
     for i in range(len(df)):
-        df_dist.loc[len(df_dist)] = [df.loc[i]["X"] - df.loc[i]["Y"], df.loc[i]["X"] + df.loc[i]["Y"], df.loc[i]["X"]] 
+        df_dist.loc[len(df_dist)] = [df.loc[i]["Movimiento X"] - df.loc[i]["Movimiento Y"], df.loc[i]["Movimiento X"] + df.loc[i]["Movimiento Y"], df.loc[i]["Movimiento X"]-z] 
     # Regreso al punto inicial
     last = len(df_dist)-1
-    df_dist.loc[len(df_dist)] = [df.loc[last]["X"] - df.loc[last]["Y"] - ini_a, df.loc[last]["X"] + df.loc[last]["Y"]- ini_b, df.loc[last]["X"] - z - ini_c] 
+    df_dist.loc[len(df_dist)] = [df.loc[last]["Movimiento X"] - df.loc[last]["Movimiento Y"] - ini_a, df.loc[last]["Movimiento X"] + df.loc[last]["Movimiento Y"]- ini_b, df.loc[last]["Movimiento X"] - z - ini_c] 
 
 
     return df_dist
