@@ -71,8 +71,8 @@ st.title("📐 Generador de puntos de un polígono")
 
 col1,col2 = st.columns(2)
 with col1:
-    center_x = st.number_input("Coordenada X del centro:", min_value=2.0, max_value=30.0, value=6.0, format="%.2f")
-    center_y = st.number_input("Coordenada Y del centro:", min_value=2.0, max_value=30.0, value=6.0, format="%.2f")
+    center_x = st.number_input("Coordenada X del centro:", min_value=2.0, max_value=30.0, value=21.83, format="%.2f")
+    center_y = st.number_input("Coordenada Y del centro:", min_value=2.0, max_value=30.0, value=12.66, format="%.2f")
     center_z = st.number_input("Altura:", min_value=2.0, max_value=30.0, value=6.0, format="%.2f")
 with col2:
     ini_a = st.number_input("Offset carro A:", min_value=1.0, max_value=30.0, value=6.0, format="%.2f")
