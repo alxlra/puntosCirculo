@@ -30,6 +30,20 @@ def calcular_distancias(df, puntos):
 
     return df_dist
 
+# Función para calcular las distancias de movimiento entre los puntos
+def calcular_distancias_motor(df, z, ini_a, ini_b, ini_c):
+    """Calcula las distancias de movimiento entre cada punto."""
+    df_dist = pd.DataFrame(columns=["Movimiento X", "Movimiento Y", "Movimiento Z"])
+    df_dist.loc[len(df_dist)] = [df.loc[0]["X"] - df.loc[0]["Y"] - ini_a, df.loc[0]["X"] + df.loc[0]["Y"]- ini_b, df.loc[0]["X"] - z - ini_c]  # Movimiento inicial
+
+    for i in range(len(df)):
+        df_dist.loc[len(df_dist)] = [df.loc[i]["X"] - df.loc[i]["Y"], df.loc[i]["X"] + df.loc[i]["Y"], df.loc[i]["X"]] 
+    # Regreso al punto inicial
+    last = len(df_dist)-1
+    df_dist.loc[len(df_dist)] = [df.loc[last]["X"] - df.loc[last]["Y"] - ini_a, df.loc[last]["X"] + df.loc[last]["Y"]- ini_b, df.loc[last]["X"] - z - ini_c] 
+
+
+    return df_dist
 
 def graficar_puntos(df):
     plt.style.use("ggplot")
@@ -53,9 +67,17 @@ st.title("📐 Generador de puntos de un polígono")
 
 center_x = st.number_input("Coordenada X del centro:", min_value=2.0, max_value=30.0, value=6.0, format="%.2f")
 center_y = st.number_input("Coordenada Y del centro:", min_value=2.0, max_value=30.0, value=6.0, format="%.2f")
+center_z = st.number_input("Coordenada Y del centro:", min_value=2.0, max_value=30.0, value=6.0, format="%.2f")
 radio = st.number_input("Radio:", min_value=1.0, max_value=10.0, value=4.0, format="%.2f")
 
 puntos = st.slider("Número de puntos:", min_value=3, max_value=30, value=15)
+st.divider()
+
+ini_a = st.number_input("Coordenada X del centro:", min_value=2.0, max_value=30.0, value=6.0, format="%.2f")
+ini_b = st.number_input("Coordenada X del centro:", min_value=2.0, max_value=30.0, value=16.25, format="%.2f")
+ini_c = st.number_input("Coordenada X del centro:", min_value=2.0, max_value=30.0, value=2.5, format="%.2f")
+
+#puntos = st.slider("Número de puntos:", min_value=3, max_value=30, value=15)
 
 if "df" not in st.session_state:
     st.session_state.df = pd.DataFrame(columns=["X", "Y"])
@@ -63,10 +85,14 @@ if "df" not in st.session_state:
 if "df_dist" not in st.session_state:
     st.session_state.df_dist = pd.DataFrame(columns=["Movimiento X", "Movimiento Y"])
 
+if "df_dist_motor" not in st.session_state:
+    st.session_state.df_dist_motor = pd.DataFrame(columns=["Movimiento X", "Movimiento Y", "Movimiento Z"])
+
 if st.button("✔ Generar puntos"):
     #cálculos
     st.session_state.df = calcular_puntos(center_x, center_y, radio, puntos)    
     st.session_state.df_dist = calcular_distancias(st.session_state.df, puntos)
+    st.session_state.df_dist_motor = calcular_distancias_motor(st.session_state.df_dist, center_z, ini_a, ini_b, ini_c)
 
 # ------------
 placeholder = st.empty() #contenedor dinámico
@@ -76,10 +102,11 @@ if not st.session_state.df.empty and not st.session_state.df_dist.empty:
 
     df = st.session_state.df
     df_dist = st.session_state.df_dist
+    df_dist_motor = st.session_state.df_dist_motor
     with placeholder.container():
         st.divider()
 
-        col1,col2 = st.columns(2)
+        col1,col2,col3 = st.columns(3)
         with col1:
             st.subheader("Puntos generados")
             st.dataframe(df)
@@ -100,6 +127,17 @@ if not st.session_state.df.empty and not st.session_state.df_dist.empty:
                 label="💾 Descargar movimientos",
                 data=csv2,
                 file_name="movimientos.csv",
+                mime="text/csv"
+            )
+        with col3:
+            st.subheader("Movimientos motor")
+            st.dataframe(df_dist_motor)
+            #st.button("Descargar movimientos", df.to_csv("movimientos.csv", index=False))
+            csv3 = df_dist_motor.to_csv(index=False)  # Convertir el dataframe a CSV
+            st.download_button(
+                label="💾 Descargar movimientos motor",
+                data=csv3,
+                file_name="movimientos_motor.csv",
                 mime="text/csv"
             )
         st.divider()
