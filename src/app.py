@@ -40,7 +40,7 @@ def calcular_distancias_motor(df, z, ini_a, ini_b, ini_c):
         df_dist.loc[len(df_dist)] = [df.loc[i]["Movimiento X"] - df.loc[i]["Movimiento Y"], df.loc[i]["Movimiento X"] + df.loc[i]["Movimiento Y"], df.loc[i]["Movimiento X"]-z] 
     # Regreso al punto inicial
     last = len(df_dist)-1
-    df_dist.loc[len(df_dist)] = [df.loc[last]["Movimiento X"] - df.loc[last]["Movimiento Y"] - ini_a, df.loc[last]["Movimiento X"] + df.loc[last]["Movimiento Y"]- ini_b, df.loc[last]["Movimiento X"] - z - ini_c] 
+    #df_dist.loc[len(df_dist)] = [df.loc[last]["Movimiento X"] - df.loc[last]["Movimiento Y"] - ini_a, df.loc[last]["Movimiento X"] + df.loc[last]["Movimiento Y"]- ini_b, df.loc[last]["Movimiento X"] - z - ini_c] 
 
 
     return df_dist
@@ -130,7 +130,7 @@ if not st.session_state.df.empty and not st.session_state.df_dist.empty:
                 mime="text/csv"
             )
         with col3:
-            st.subheader("Movimientos motor")
+            st.subheader("Motores")
             st.dataframe(df_dist_motor)
             #st.button("Descargar movimientos", df.to_csv("movimientos.csv", index=False))
             csv3 = df_dist_motor.to_csv(index=False)  # Convertir el dataframe a CSV
