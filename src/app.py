@@ -36,12 +36,12 @@ def calcular_distancias_motor(df, z, ini_a, ini_b, ini_c):
     df_dist = pd.DataFrame(columns=["Movimiento X", "Movimiento Y", "Movimiento Z"])
 
     i=0
-    df_dist.loc[len(df_dist)] = [df.loc[i]["X"] - df.loc[i]["Y"] - ini_a, df.loc[i]["X"] + df.loc[i]["Y"] - ini_b, df.loc[i]["X"]-z - ini_c] 
+    df_dist.loc[len(df_dist)] = [df.loc[i]["X"] + df.loc[i]["Y"] - ini_a, df.loc[i]["X"] - df.loc[i]["Y"] - ini_b, df.loc[i]["X"]-z - ini_c] 
 
     for i in range(len(df)):
         dist_x = df.loc[(i + 1) % puntos]["X"] - df.loc[i]["X"]
         dist_y = df.loc[(i + 1) % puntos]["Y"] - df.loc[i]["Y"]
-        df_dist.loc[len(df_dist)] = [dist_x-dist_y- ini_a, dist_x+dist_y- ini_b, dist_x-z- ini_c]
+        df_dist.loc[len(df_dist)] = [dist_x+dist_y- ini_a, dist_x-dist_y- ini_b, dist_x-z- ini_c]
 
     # Regreso al punto inicial
     last = len(df_dist)-1
@@ -73,16 +73,14 @@ col1,col2 = st.columns(2)
 with col1:
     center_x = st.number_input("Coordenada X del centro:", min_value=2.0, max_value=30.0, value=6.0, format="%.2f")
     center_y = st.number_input("Coordenada Y del centro:", min_value=2.0, max_value=30.0, value=6.0, format="%.2f")
-    center_z = st.number_input("Coordenada Z del centro:", min_value=2.0, max_value=30.0, value=6.0, format="%.2f")
+    center_z = st.number_input("Altura:", min_value=2.0, max_value=30.0, value=6.0, format="%.2f")
 with col2:
-    ini_a = st.number_input("Offset A:", min_value=2.0, max_value=30.0, value=6.0, format="%.2f")
-    ini_b = st.number_input("Offset B:", min_value=2.0, max_value=30.0, value=16.25, format="%.2f")
-    ini_c = st.number_input("Offset C:", min_value=2.0, max_value=30.0, value=2.5, format="%.2f")
+    ini_a = st.number_input("Offset carro A:", min_value=1.0, max_value=30.0, value=6.0, format="%.2f")
+    ini_b = st.number_input("Offset carro B:", min_value=1.0, max_value=30.0, value=16.25, format="%.2f")
+    ini_c = st.number_input("Offset carro C:", min_value=1.0, max_value=30.0, value=2.5, format="%.2f")
 
 radio = st.number_input("Radio:", min_value=1.0, max_value=10.0, value=4.0, format="%.2f")
-
 puntos = st.slider("Número de puntos:", min_value=3, max_value=30, value=15)
-st.divider()
 
 
 #puntos = st.slider("Número de puntos:", min_value=3, max_value=30, value=15)
