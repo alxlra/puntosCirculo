@@ -98,7 +98,7 @@ if st.button("✔ Generar puntos"):
     #cálculos
     st.session_state.df = calcular_puntos(center_x, center_y, radio, puntos)    
     st.session_state.df_dist = calcular_distancias(st.session_state.df, puntos)
-    st.session_state.df_dist_motor = calcular_distancias_motor(st.session_state.df, center_z, ini_a, ini_b, ini_c)
+    st.session_state.df_dist_motor = calcular_distancias_motor(st.session_state.df, center_z, ini_b, ini_a, ini_c)
 
 # ------------
 placeholder = st.empty() #contenedor dinámico
