@@ -75,9 +75,9 @@ with col1:
     center_y = st.number_input("Coordenada Y del centro:", min_value=2.0, max_value=30.0, value=12.66, format="%.2f")
     center_z = st.number_input("Altura:", min_value=2.0, max_value=30.0, value=6.0, format="%.2f")
 with col2:
-    ini_a = st.number_input("Offset carro A:", min_value=1.0, max_value=30.0, value=6.0, format="%.2f")
-    ini_b = st.number_input("Offset carro B:", min_value=1.0, max_value=30.0, value=16.25, format="%.2f")
-    ini_c = st.number_input("Offset carro C:", min_value=1.0, max_value=30.0, value=2.5, format="%.2f")
+    ini_a = st.number_input("Offset carro A:", min_value=0.0, max_value=30.0, value=0.0, format="%.2f")
+    ini_b = st.number_input("Offset carro B:", min_value=0.0, max_value=30.0, value=16.25, format="%.2f")
+    ini_c = st.number_input("Offset carro C:", min_value=0.0, max_value=30.0, value=2.5, format="%.2f")
 
 radio = st.number_input("Radio:", min_value=1.0, max_value=10.0, value=4.0, format="%.2f")
 puntos = st.slider("Número de puntos:", min_value=3, max_value=30, value=15)
