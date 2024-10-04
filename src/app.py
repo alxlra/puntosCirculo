@@ -41,7 +41,7 @@ def calcular_distancias_motor(df, z, ini_a, ini_b, ini_c):
     for i in range(len(df)):
         dist_x = df.loc[(i + 1) % puntos]["X"] - df.loc[i]["X"]
         dist_y = df.loc[(i + 1) % puntos]["Y"] - df.loc[i]["Y"]
-        df_dist.loc[len(df_dist)] = [dist_x+dist_y- ini_a, dist_x-dist_y- ini_b, dist_x-z- ini_c]
+        df_dist.loc[len(df_dist)] = [dist_x+dist_y, dist_x-dist_y, dist_x-z]
 
     # Regreso al punto inicial
     last = len(df_dist)-1
@@ -73,7 +73,7 @@ col1,col2 = st.columns(2)
 with col1:
     center_x = st.number_input("Coordenada X del centro:", min_value=2.0, max_value=30.0, value=21.83, format="%.2f")
     center_y = st.number_input("Coordenada Y del centro:", min_value=2.0, max_value=30.0, value=12.66, format="%.2f")
-    center_z = st.number_input("Altura:", min_value=2.0, max_value=30.0, value=6.0, format="%.2f")
+    center_z = st.number_input("Altura:", min_value=2.0, max_value=30.0, value=5.625, format="%.2f")
 with col2:
     ini_a = st.number_input("Offset carro A:", min_value=0.0, max_value=30.0, value=0.0, format="%.2f")
     ini_b = st.number_input("Offset carro B:", min_value=0.0, max_value=30.0, value=16.25, format="%.2f")
