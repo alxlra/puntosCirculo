@@ -50,6 +50,9 @@ def calcular_distancias_motor(df, z, ini_a, ini_b, ini_c):
     df_dist.loc[len(df_dist)] = [-(df.loc[i]["X"] + df.loc[i]["Y"] - ini_a), -(df.loc[i]["X"] - df.loc[i]["Y"] - ini_b), -(df.loc[i]["X"]-z - ini_c)] 
 
 
+    df_dist["Movimiento X"] = df_dist["Movimiento X"]*0.2
+    df_dist["Movimiento Y"] = df_dist["Movimiento Y"]*(-0.2)
+    df_dist["Movimiento Z"] = df_dist["Movimiento Z"]*0.2
     return df_dist
 
 def graficar_puntos(df):
