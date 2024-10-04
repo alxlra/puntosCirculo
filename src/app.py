@@ -67,7 +67,7 @@ st.title("📐 Generador de puntos de un polígono")
 
 center_x = st.number_input("Coordenada X del centro:", min_value=2.0, max_value=30.0, value=6.0, format="%.2f")
 center_y = st.number_input("Coordenada Y del centro:", min_value=2.0, max_value=30.0, value=6.0, format="%.2f")
-center_z = st.number_input("Coordenada Y del centro:", min_value=2.0, max_value=30.0, value=6.0, format="%.2f")
+center_z = st.number_input("Coordenada Z del centro:", min_value=2.0, max_value=30.0, value=6.0, format="%.2f")
 radio = st.number_input("Radio:", min_value=1.0, max_value=10.0, value=4.0, format="%.2f")
 
 puntos = st.slider("Número de puntos:", min_value=3, max_value=30, value=15)
