@@ -34,10 +34,15 @@ def calcular_distancias(df, puntos):
 def calcular_distancias_motor(df, z, ini_a, ini_b, ini_c):
     """Calcula las distancias de movimiento entre cada punto."""
     df_dist = pd.DataFrame(columns=["Movimiento X", "Movimiento Y", "Movimiento Z"])
-    df_dist.loc[len(df_dist)] = [df.loc[0]["Movimiento X"] - df.loc[0]["Movimiento Y"] - ini_a, df.loc[0]["Movimiento X"] + df.loc[0]["Movimiento Y"]- ini_b, df.loc[0]["Movimiento X"] - z - ini_c]  # Movimiento inicial
+
+    i=0
+    df_dist.loc[len(df_dist)] = [df.loc[i]["X"] - df.loc[i]["Y"] - ini_a, df.loc[i]["X"] + df.loc[i]["Y"] - ini_b, df.loc[i]["X"]-z - ini_c] 
 
     for i in range(len(df)):
-        df_dist.loc[len(df_dist)] = [df.loc[i]["Movimiento X"] - df.loc[i]["Movimiento Y"], df.loc[i]["Movimiento X"] + df.loc[i]["Movimiento Y"], df.loc[i]["Movimiento X"]-z] 
+        dist_x = df.loc[(i + 1) % puntos]["X"] - df.loc[i]["X"]
+        dist_y = df.loc[(i + 1) % puntos]["Y"] - df.loc[i]["Y"]
+        df_dist.loc[len(df_dist)] = [dist_x-dist_y- ini_a, dist_x+dist_y- ini_b, dist_x-z- ini_c]
+
     # Regreso al punto inicial
     last = len(df_dist)-1
     #df_dist.loc[len(df_dist)] = [df.loc[last]["Movimiento X"] - df.loc[last]["Movimiento Y"] - ini_a, df.loc[last]["Movimiento X"] + df.loc[last]["Movimiento Y"]- ini_b, df.loc[last]["Movimiento X"] - z - ini_c] 
@@ -92,7 +97,7 @@ if st.button("✔ Generar puntos"):
     #cálculos
     st.session_state.df = calcular_puntos(center_x, center_y, radio, puntos)    
     st.session_state.df_dist = calcular_distancias(st.session_state.df, puntos)
-    st.session_state.df_dist_motor = calcular_distancias_motor(st.session_state.df_dist, center_z, ini_a, ini_b, ini_c)
+    st.session_state.df_dist_motor = calcular_distancias_motor(st.session_state.df, center_z, ini_a, ini_b, ini_c)
 
 # ------------
 placeholder = st.empty() #contenedor dinámico
