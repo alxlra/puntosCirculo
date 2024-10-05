@@ -26,7 +26,7 @@ def test_calcular_distancias():
     puntos = 4
 
     # Calcula las distancias
-    df_dist = calcular_distancias(df, puntos)
+    df_dist = calcular_distancias(df, 5, puntos)
 
     # Verifica que el DataFrame tiene 5 filas
     assert len(df_dist) == puntos + 1 
