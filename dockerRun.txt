@@ -1,0 +1,8 @@
+docker build -t streamlit-app .
+Ctrl+Shift+P  Docker images
+
+//----
+Container
+volumes
+src         /code
+APP_NAME    app.py

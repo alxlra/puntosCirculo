@@ -2,11 +2,7 @@
 
 import pytest
 import pandas as pd
-<<<<<<< HEAD
-from app import calcular_puntos, calcular_distancias
-=======
 from app import calcular_puntos, calcular_distancias, calcular_distancias_motor
->>>>>>> 12c62b5a8e1fe5a2b2ed707fc6df8cb30362d214
 
 def test_calcular_puntos():
     # Prueba para calcular puntos en un círculo con centro (0, 0), radio 1 y 4 puntos
@@ -39,8 +35,6 @@ def test_calcular_distancias():
     for i, (dx, dy) in enumerate(expected_distances):
         assert df_dist.loc[i, "Movimiento X"] == dx
         assert df_dist.loc[i, "Movimiento Y"] == dy
-<<<<<<< HEAD
-=======
 
 
 def test_calcular_distancias_motor():
@@ -61,4 +55,3 @@ def test_calcular_distancias_motor():
         assert df_dist.loc[i, "Movimiento X"] == dx
         assert df_dist.loc[i, "Movimiento Y"] == dy
         assert df_dist.loc[i, "Movimiento Z"] == dz
->>>>>>> 12c62b5a8e1fe5a2b2ed707fc6df8cb30362d214
