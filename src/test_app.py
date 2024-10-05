@@ -2,7 +2,11 @@
 
 import pytest
 import pandas as pd
+<<<<<<< HEAD
 from app import calcular_puntos, calcular_distancias
+=======
+from app import calcular_puntos, calcular_distancias, calcular_distancias_motor
+>>>>>>> 12c62b5a8e1fe5a2b2ed707fc6df8cb30362d214
 
 def test_calcular_puntos():
     # Prueba para calcular puntos en un círculo con centro (0, 0), radio 1 y 4 puntos
@@ -35,3 +39,26 @@ def test_calcular_distancias():
     for i, (dx, dy) in enumerate(expected_distances):
         assert df_dist.loc[i, "Movimiento X"] == dx
         assert df_dist.loc[i, "Movimiento Y"] == dy
+<<<<<<< HEAD
+=======
+
+
+def test_calcular_distancias_motor():
+    # Crea un DataFrame de puntos para la prueba
+    data = {"X": [7, 6, 5, 6], "Y": [6, 7, 6, 5]}
+    df = pd.DataFrame(data)
+    puntos = 4
+
+    # Calcula las distancias
+    df_dist = calcular_distancias_motor(df, 2, 1, 1, 1)
+
+    # Verifica que el DataFrame tiene 5 filas
+    assert len(df_dist) == puntos + 1 
+
+    # Verifica las distancias de movimiento
+    expected_distances = [(7-6-1, 7+6-1, 7-2-1), (-1-1-1, -1+1-1,-1+2-1), (-1+1-1, -1-1-1, -1-2-1), (1+1-1, 1-1-1,1-2-1),(1-1-1, 1+1-1,1-2-1)]  # Valores esperados
+    for i, (dx, dy, dz) in enumerate(expected_distances):
+        assert df_dist.loc[i, "Movimiento X"] == dx
+        assert df_dist.loc[i, "Movimiento Y"] == dy
+        assert df_dist.loc[i, "Movimiento Z"] == dz
+>>>>>>> 12c62b5a8e1fe5a2b2ed707fc6df8cb30362d214
