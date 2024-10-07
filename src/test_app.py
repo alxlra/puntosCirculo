@@ -2,7 +2,7 @@
 
 import pytest
 import pandas as pd
-from app import calcular_puntos, calcular_distancias, calcular_distancias_motor
+from calculos import *
 
 def test_calcular_puntos():
     """
@@ -51,7 +51,7 @@ def test_calcular_distancias():
     puntos = 4
 
     # Calcula las distancias
-    df_dist = calcular_distancias_motor(df, 2, 1, 1, 1)
+    df_dist = calcular_distancias_motor(df, 2, 1, 1, 1, puntos)
 
     # Verifica que el DataFrame tiene 5 filas
     assert len(df_dist) == puntos + 1 
