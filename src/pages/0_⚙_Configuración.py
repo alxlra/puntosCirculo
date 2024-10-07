@@ -1,25 +1,42 @@
 import streamlit as st
 import pandas as pd
 import json
-from preferencias import guardar_preferencias
+from preferencias import *
+
+# Leer y mostrar las preferencias guardadas
+preferencias = leer_preferencias()
+if not preferencias:
+    st.error("No hay preferencias guardadas.", icon="ℹ")
+ini_a = preferencias.get("ini_a", 0.0)
+ini_b = preferencias.get("ini_b", 16.25)
+ini_c = preferencias.get("ini_c", 2.5)
+center_z = preferencias.get("z_min", 5.625)
+x_min = preferencias.get("x_min", 0.0)
+x_max = preferencias.get("x_max", 35.0)
+y_min = preferencias.get("y_min", 0.0)
+y_max = preferencias.get("y_max", 35.0)
 
 st.title("⚙ Configuración de Tripteron")
 st.subheader("Limites de trabajo")
 col1,col2 = st.columns(2)
 with col1:
-    x_min = st.number_input("Límite mínimo X:", min_value=0.0, max_value=30.0, value=8.125, format="%.3f", step=0.5)
-    y_min = st.number_input("Límite mínimo Y:", min_value=0.0, max_value=30.0, value=8.125, format="%.3f", step=0.5)
-    z_min = st.number_input("Límite mínimo Z:", min_value=0.0, max_value=30.0, value=5.625, format="%.3f", step=0.5)
+    x_min = st.number_input("Límite mínimo X:", min_value=0.0, max_value=30.0, value=preferencias.get("x_min", 8.125), format="%.3f", step=0.5)
+    y_min = st.number_input("Límite mínimo Y:", min_value=0.0, max_value=30.0, value=preferencias.get("y_min", 8.125), format="%.3f", step=0.5)
+    z_min = st.number_input("Límite mínimo Z:", min_value=0.0, max_value=30.0, value=preferencias.get("z_min", 5.625), format="%.3f", step=0.5)
 with col2:
-    x_max = st.number_input("Límite máximo X:", min_value=0.0, max_value=40.0, value=35.625, format="%.3f", step=0.5)
-    y_max = st.number_input("Límite máximo Y:", min_value=0.0, max_value=30.0, value=21.75, format="%.3f", step=0.5)
-    #center_z = st.number_input("Límite máximo Z:", min_value=2.0, max_value=30.0, value=5.625, format="%.3f", step=0.5)
-#z_max = z_min+1
+    x_max = st.number_input("Límite máximo X:", min_value=0.0, max_value=40.0, value=preferencias.get("x_max", 35.625), format="%.3f", step=0.5)
+    y_max = st.number_input("Límite máximo Y:", min_value=0.0, max_value=30.0, value=preferencias.get("y_max", 21.75), format="%.3f", step=0.5)
+
 st.divider()
-st.subheader("Posiciones de carros")
-ini_a = st.number_input("Offset carro A:", min_value=0.0, max_value=30.0, value=0.0, format="%.3f")
-ini_b = st.number_input("Offset carro B:", min_value=0.0, max_value=30.0, value=16.25, format="%.3f")
-ini_c = st.number_input("Offset carro C:", min_value=0.0, max_value=30.0, value=2.5, format="%.3f")
+st.subheader("Posiciones de carros", help="Orden: [B] &nbsp;&nbsp; [C] [A]")
+
+col1,col2,col3 = st.columns(3)
+with col1:
+    ini_b = st.number_input("Offset carro B:", min_value=0.0, max_value=30.0, value=preferencias.get("ini_b", 16.25), format="%.3f", help="Carro izquierda independiente")
+with col2:
+    ini_c = st.number_input("Offset carro C:", min_value=0.0, max_value=30.0, value=preferencias.get("ini_c", 2.5), format="%.3f", help="Carro central")
+with col3:
+    ini_a = st.number_input("Offset carro A:", min_value=0.0, max_value=30.0, value=preferencias.get("ini_a", 0.0), format="%.3f", help="Carro derecha")
 
 if st.button("💾 Guardar preferencias"):
     preferencias = {

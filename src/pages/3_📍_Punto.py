@@ -40,44 +40,31 @@ y_max = preferencias.get("y_max", 35.0)
 if not preferencias:
     st.error("No hay preferencias guardadas.", icon="ℹ")
 
-st.title("📐 Generador de puntos de un polígono")
-st.subheader("Datos del polígono")
+st.title("📍 Movimiento hacia un punto")
+
 col1,col2 = st.columns(2)
 with col1:
-    center_x = st.number_input("Coordenada X del centro:", min_value=x_min, max_value=x_max, value=21.83, format="%.3f", step=0.5)
-    radio = st.number_input("Radio:", min_value=1.0, max_value=10.0, value=4.0, format="%.2f", step=0.5)
+    center_x = st.number_input("Coordenada X:", min_value=x_min, max_value=x_max, value=21.83, format="%.3f", step=0.5)
     levantar = st.checkbox("Levantar pluma al dibujar", value=True, help="Levanta la pluma al inicio y al final del dibujo.")
     offset = st.checkbox("Quitar offset de carros", value=True, help="Quita el offset del inicio de los carros en el código G.")
 with col2:
-    center_y = st.number_input("Coordenada Y del centro:", min_value=y_min, max_value=y_max, value=12.66, format="%.3f", step=0.5)
-    puntos = st.slider("Número de puntos:", min_value=2, max_value=20, value=10)
+    center_y = st.number_input("Coordenada Y:", min_value=y_min, max_value=y_max, value=12.66, format="%.3f", step=0.5)
 
 
-# Guardar los datos en la sesión
-#
-#if "df" not in st.session_state:
-#    st.session_state.df = pd.DataFrame(columns=["X", "Y", "Z"])
-#
-#if "df_dist" not in st.session_state:
-#    st.session_state.df_dist = pd.DataFrame(columns=["Movimiento X", "Movimiento Y", "Movimiento Z"])
-#
-##if "df_dist_motor" not in st.session_state:
-    #st.session_state.df_dist_motor = pd.DataFrame(columns=["Movimiento X", "Movimiento Y", "Movimiento Z"])
-
-if st.button("✔ Generar puntos"):
+if st.button("✔ Generar"):
     #cálculos
-    df = calcular_puntos(center_x, center_y, center_z, radio, puntos, levantar)    
+    df = calcular_punto(center_x, center_y, center_z, levantar)    
     df_dist = calcular_distancias(df)
     df_dist_motor = calcular_distancias_motor(df, ini_b, ini_a, ini_c, offset)
 
 
     st.divider()
 
-    st.write("Puntos generados: ", str(len(df)))
+    st.write("Movimientos generados: ", str(len(df)))
 
     col1,col2,col3 = st.columns(3)
     with col1:
-        st.subheader("Puntos generados")
+        st.subheader("Coordenadas generadas")
         st.dataframe(df)
         #st.button("Descargar puntos", df.to_csv("puntos.csv", index=False))
         csv = df.to_csv(index=False)  # Convertir el dataframe a CSV
@@ -111,6 +98,4 @@ if st.button("✔ Generar puntos"):
         )
     st.divider()
     
-    #gráfica de los puntos
-    graficar_puntos(df)
         

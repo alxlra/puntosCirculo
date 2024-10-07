@@ -32,15 +32,15 @@ def calcular_lineas(y_start, y_end, z, lineas):
     return df
 
 
-st.title("📐 Generador de líneas")
+st.title("📏 Generador de líneas")
 
 col1,col2 = st.columns(2)
 with col1:
-    y_start = st.number_input("Valor inicial Y:", min_value=y_min, max_value=y_max, value=y_min, format="%.3f", step=0.5)
+    y_start = st.number_input("Valor inicial Y:", min_value=y_min, max_value=y_max, value=y_min, format="%.3f", step=0.5, disabled=True)
 with col2:
-    y_end = st.number_input("Valor final Y:", min_value=y_min, max_value=y_max, value=y_max, format="%.3f", step=0.5)
+    y_end = st.number_input("Valor final Y:", min_value=y_min, max_value=y_max, value=y_max, format="%.3f", step=0.5, disabled=True)
 
-lineas = st.slider("Número de líneas:", min_value=1, max_value=10, value=2)
+lineas = st.slider("Número de líneas:", min_value=1, max_value=10, value=2, disabled=True)
 
 if st.button("✔ Generar líneas"):
     st.warning("Aún no implementado", icon="😕")
