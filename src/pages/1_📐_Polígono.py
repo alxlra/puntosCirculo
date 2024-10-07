@@ -7,7 +7,7 @@ from matplotlib import pyplot as plt
 from preferencias import leer_preferencias
 
 # Función para generar puntos en el perímetro del círculo
-def calcular_puntos(center_x, center_y, z, radio, puntos, levantar=True):
+def calcular_puntos(center_x, center_y, z, radio, puntos, levantar=False):
     """Calcula los puntos en un círculo basado en las coordenadas del centro, el radio y la cantidad de puntos."""
     angulo_lados = (2 * math.pi) / puntos
     df = pd.DataFrame(columns=["X", "Y", "Z"])
