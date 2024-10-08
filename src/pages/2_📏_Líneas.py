@@ -23,16 +23,6 @@ z_min = preferencias.get("z_min", 0.0)
 if not preferencias:
     st.error("No hay preferencias guardadas.", icon="ℹ")
 
-def calcular_lineas(y_start, y_end, z, lineas):
-    df = pd.DataFrame(columns=["X", "Y", "Z"])
-    y = (y_end - y_start)/(lineas+1)
-    for i in range(lineas):
-        x = calcula_x(y)
-        df.loc[len(df)] = [x, y, center_z]
-        
-    return df
-
-
 st.title("📏 Generador de línea")
 
 col1,col2 = st.columns(2)
@@ -43,12 +33,13 @@ with col2:
     y_start = st.number_input("Valor Y inicial:", min_value=y_min, max_value=y_max, value=12.0, format="%.3f", step=0.5)
     y_end = st.number_input("Valor Y final :", min_value=y_min, max_value=y_max, value=12.0, format="%.3f", step=0.5)
 levantar = st.checkbox("Levantar pluma al dibujar", value=True, help="Levanta la pluma al inicio y al final del dibujo.")
+offset = st.checkbox("Quitar offset de carros", value=True, help="Quita el offset del inicio de los carros en el código G.")
 
 if st.button("✔ Generar línea"):
     #cálculos
     df = calcular_linea(x_start, y_start, x_end, y_end, z_min, levantar)
     df_dist = calcular_distancias(df)
-    df_dist_motor = calcular_distancias_motor(df, ini_b, ini_a, ini_c)
+    df_dist_motor = calcular_distancias_motor(df, ini_b, ini_a, ini_c, offset)
 
     col1,col2 = st.columns(2)
     with col1:
