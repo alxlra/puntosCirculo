@@ -31,12 +31,12 @@ st.title("📐 Generador de puntos de un polígono")
 st.subheader("Datos del polígono")
 col1,col2 = st.columns(2)
 with col1:
-    center_x = st.number_input("Coordenada X del centro:", min_value=x_min, max_value=x_max, value=21.83, format="%.3f", step=0.5)
+    center_x = st.number_input("Coordenada X del centro:", min_value=x_min, max_value=x_max, value=14.8, format="%.3f", step=0.5)
     radio = st.number_input("Radio:", min_value=1.0, max_value=10.0, value=4.0, format="%.2f", step=0.5)
     levantar = st.checkbox("Levantar pluma al dibujar", value=True, help="Levanta la pluma al inicio y al final del dibujo.")
-    offset = st.checkbox("Quitar offset de carros", value=True, help="Quita el offset del inicio de los carros en el código G.")
+    offset = st.checkbox("Quitar offset de carros", value=False, help="Quita el offset del inicio de los carros en el código G.")
 with col2:
-    center_y = st.number_input("Coordenada Y del centro:", min_value=y_min, max_value=y_max, value=12.66, format="%.3f", step=0.5)
+    center_y = st.number_input("Coordenada Y del centro:", min_value=y_min, max_value=y_max, value=5.25, format="%.3f", step=0.5)
     puntos = st.slider("Número de puntos:", min_value=2, max_value=20, value=10)
 
 

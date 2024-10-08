@@ -48,7 +48,7 @@ with col1:
 with col2:
     center_y = st.number_input("Coordenada Y:", min_value=y_min, max_value=y_max, value=12.66, format="%.3f", step=0.5)
 levantar = st.checkbox("Levantar pluma al dibujar", value=True, help="Levanta la pluma al inicio y al final del dibujo.")
-offset = st.checkbox("Quitar offset de carros", value=True, help="Quita el offset del inicio de los carros en el código G.")
+offset = st.checkbox("Quitar offset de carros", value=False, help="Quita el offset del inicio de los carros en el código G.")
 
 
 if st.button("✔ Generar"):
