@@ -4,6 +4,7 @@ import pandas as pd
 from matplotlib import pyplot as plt
 
 from preferencias import leer_preferencias
+from calculos import *
 
 # Leer y mostrar las preferencias guardadas
 preferencias = leer_preferencias()
@@ -32,21 +33,49 @@ def calcular_lineas(y_start, y_end, z, lineas):
     return df
 
 
-st.title("📏 Generador de líneas")
+st.title("📏 Generador de línea")
 
 col1,col2 = st.columns(2)
 with col1:
-    y_start = st.number_input("Valor inicial Y:", min_value=y_min, max_value=y_max, value=y_min, format="%.3f", step=0.5, disabled=True)
+    x_start = st.number_input("Valor X inicial:", min_value=x_min, max_value=x_max, value=20.0, format="%.3f", step=0.5)
+    y_start = st.number_input("Valor X final :", min_value=y_min, max_value=y_max, value=12.0, format="%.3f", step=0.5)
 with col2:
-    y_end = st.number_input("Valor final Y:", min_value=y_min, max_value=y_max, value=y_max, format="%.3f", step=0.5, disabled=True)
+    x_end = st.number_input("Valor Y inicial:", min_value=x_min, max_value=x_max, value=26.0, format="%.3f", step=0.5)
+    y_end = st.number_input("Valor Y final :", min_value=y_min, max_value=y_max, value=12.0, format="%.3f", step=0.5)
+levantar = st.checkbox("Levantar pluma al dibujar", value=True, help="Levanta la pluma al inicio y al final del dibujo.")
 
-lineas = st.slider("Número de líneas:", min_value=1, max_value=10, value=2, disabled=True)
-
-if st.button("✔ Generar líneas"):
-    st.warning("Aún no implementado", icon="😕")
-    st.balloons()
+if st.button("✔ Generar línea"):
     #cálculos
-    #df = calcular_lineas(y_start, y_end, z_min, lineas)    
-    #st.session_state.df_dist = calcular_distancias(st.session_state.df,center_z, líneas)
-    #st.session_state.df_dist_motor = calcular_distancias_motor(st.session_state.df, center_z, ini_b, ini_a, ini_c)
+    df = calcular_linea(x_start, y_start, x_end, y_end, z_min, levantar)
+    df_dist = calcular_distancias(df)
+    df_dist_motor = calcular_distancias_motor(df, ini_b, ini_a, ini_c)
+
+    col1,col2 = st.columns(2)
+    with col1:
+        st.subheader("Puntos generados")
+        st.dataframe(df)
+        #st.button("Descargar puntos", df.to_csv("puntos.csv", index=False))
+        csv = df.to_csv(index=False)  # Convertir el dataframe a CSV
+        st.download_button(
+            label="💾 Descargar puntos",
+            data=csv,
+            file_name="puntos.csv",
+            mime="text/csv"
+        )
+    
+    with col2:
+        st.subheader("Carros código G")
+        st.dataframe(df_dist_motor)
+        #st.button("Descargar movimientos", df.to_csv("movimientos.csv", index=False))
+        csv3 = df_dist_motor.to_csv(index=False)  # Convertir el dataframe a CSV
+        st.download_button(
+            label="💾 Descargar movimientos motor",
+            data=csv3,
+            file_name="movimientos_motor.csv",
+            mime="text/csv"
+        )
+    st.divider()
+    
+    #gráfica de los puntos
+    graficar_puntos(df)
 
