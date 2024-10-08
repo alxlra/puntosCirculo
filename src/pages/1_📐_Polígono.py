@@ -9,19 +9,6 @@ from calculos import *
 
 
 
-def graficar_puntos(df):
-    plt.style.use("ggplot")
-    st.subheader("Gráfica de los puntos generados")
-    # Crear una gráfica de dispersión
-    plt.figure(figsize=(8, 8))
-    plt.scatter(df["X"], df["Y"], color='red', marker='o')
-    #plt.title("Gráfica de Dispersión")
-    #plt.xlabel("X")
-    #plt.ylabel("Y")
-    plt.grid(True)
-
-    # Mostrar la gráfica en Streamlit
-    st.pyplot(plt)
 #--------------------
 
 # Leer y mostrar las preferencias guardadas
@@ -75,7 +62,7 @@ if st.button("✔ Generar puntos"):
 
     st.write("Puntos generados: ", str(len(df)))
 
-    col1,col2,col3 = st.columns(3)
+    col1,col2 = st.columns(2)
     with col1:
         st.subheader("Puntos generados")
         st.dataframe(df)
@@ -88,17 +75,6 @@ if st.button("✔ Generar puntos"):
             mime="text/csv"
         )
     with col2:
-        st.subheader("Movimientos")
-        st.dataframe(df_dist)
-        #st.button("Descargar movimientos", df.to_csv("movimientos.csv", index=False))
-        csv2 = df_dist.to_csv(index=False)  # Convertir el dataframe a CSV
-        st.download_button(
-            label="💾 Descargar movimientos",
-            data=csv2,
-            file_name="movimientos.csv",
-            mime="text/csv"
-        )
-    with col3:
         st.subheader("Carros código G")
         st.dataframe(df_dist_motor)
         #st.button("Descargar movimientos", df.to_csv("movimientos.csv", index=False))

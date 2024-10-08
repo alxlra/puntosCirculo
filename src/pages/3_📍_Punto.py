@@ -56,13 +56,14 @@ if st.button("✔ Generar"):
     df = calcular_punto(center_x, center_y, center_z, levantar)    
     df_dist = calcular_distancias(df)
     df_dist_motor = calcular_distancias_motor(df, ini_b, ini_a, ini_c, offset)
+    df_dist_motor2 = calcular_distancias_motor_v2(df, ini_b, ini_a, ini_c, offset)
 
 
     st.divider()
 
     st.write("Movimientos generados: ", str(len(df)))
 
-    col1,col2,col3 = st.columns(3)
+    col1,col2, col3 = st.columns(3)
     with col1:
         st.subheader("Coordenadas generadas")
         st.dataframe(df)
@@ -75,17 +76,6 @@ if st.button("✔ Generar"):
             mime="text/csv"
         )
     with col2:
-        st.subheader("Movimientos")
-        st.dataframe(df_dist)
-        #st.button("Descargar movimientos", df.to_csv("movimientos.csv", index=False))
-        csv2 = df_dist.to_csv(index=False)  # Convertir el dataframe a CSV
-        st.download_button(
-            label="💾 Descargar movimientos",
-            data=csv2,
-            file_name="movimientos.csv",
-            mime="text/csv"
-        )
-    with col3:
         st.subheader("Carros código G")
         st.dataframe(df_dist_motor)
         #st.button("Descargar movimientos", df.to_csv("movimientos.csv", index=False))
@@ -94,6 +84,17 @@ if st.button("✔ Generar"):
             label="💾 Descargar movimientos motor",
             data=csv3,
             file_name="movimientos_motor.csv",
+            mime="text/csv"
+        )
+    with col3:
+        st.subheader("Carros código G v2")
+        st.dataframe(df_dist_motor2)
+        #st.button("Descargar movimientos", df.to_csv("movimientos.csv", index=False))
+        csv4 = df_dist_motor2.to_csv(index=False)  # Convertir el dataframe a CSV
+        st.download_button(
+            label="💾 Descargar movimientos motor2",
+            data=csv4,
+            file_name="movimientos_motor2.csv",
             mime="text/csv"
         )
     st.divider()

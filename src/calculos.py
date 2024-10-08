@@ -1,5 +1,7 @@
+import streamlit as st
 import math
 import pandas as pd
+from matplotlib import pyplot as plt
 
 # Función para generar puntos en el perímetro del círculo
 def calcular_puntos(center_x, center_y, z, radio, puntos, levantar=False):
@@ -24,6 +26,23 @@ def calcular_puntos(center_x, center_y, z, radio, puntos, levantar=False):
     if levantar:
         df.loc[len(df)] = [x, y, z_up]  # Movimiento inicial
     return df
+
+# Función para generar puntos en el perímetro del círculo
+def calcular_linea(x_start, y_start, x_end, y_end, z, levantar=False):
+    """Calcula los puntos de una línea."""
+    df = pd.DataFrame(columns=["X", "Y", "Z"])
+
+    z_up = z+1
+    if levantar:
+        df.loc[len(df)] = [x_start, y_start, z_up]  # Movimiento inicial
+
+    df.loc[len(df)] = [x_start, y_start, z]
+    df.loc[len(df)] = [x_end, y_end, z] 
+
+    if levantar:
+        df.loc[len(df)] = [x_end, y_end, z_up]  # Movimiento inicial
+    return df
+
 
 # Función para generar un solo punto
 def calcular_punto(x, y, z, levantar=False):
@@ -60,14 +79,14 @@ def calcular_distancias(df):
 # Función para calcular las distancias de movimiento entre los puntos
 def calcular_distancias_motor(df, ini_a, ini_b, ini_c, offset=True):
     """Calcula las distancias de movimiento entre cada punto."""
-    df_dist = pd.DataFrame(columns=["Movimiento X", "Movimiento Y", "Movimiento Z"])
+    df_dist = pd.DataFrame(columns=["Carro A", "Carro B", "Carro C"])
     puntos = len(df)
     i=0
     if offset:
-        df_dist.loc[len(df_dist)] = [df.loc[i]["X"] + df.loc[i]["Y"] - ini_a, df.loc[i]["X"] - df.loc[i]["Y"] - ini_b, df.loc[i]["X"]-df.loc[i]["Z"] - ini_c] 
+        df_dist.loc[len(df_dist)] = [df.loc[i]["X"] + df.loc[i]["Y"] + 2.5, df.loc[i]["X"] - df.loc[i]["Y"] - 2.5, df.loc[i]["X"]-df.loc[i]["Z"] - 2.5] 
     else:
         df_dist.loc[len(df_dist)] = [df.loc[i]["X"] + df.loc[i]["Y"], df.loc[i]["X"] - df.loc[i]["Y"] , df.loc[i]["X"]-df.loc[i]["Z"]] 
-
+    
     for i in range(len(df)-1):
         dist_x = df.loc[(i + 1) % puntos]["X"] - df.loc[i]["X"]
         dist_y = df.loc[(i + 1) % puntos]["Y"] - df.loc[i]["Y"]
@@ -77,12 +96,27 @@ def calcular_distancias_motor(df, ini_a, ini_b, ini_c, offset=True):
     # Regreso al punto inicial
     i=0
     if offset:
-        df_dist.loc[len(df_dist)] = [-(df.loc[i]["X"] + df.loc[i]["Y"] - ini_a), -(df.loc[i]["X"] - df.loc[i]["Y"] - ini_b), -(df.loc[i]["X"]-df.loc[i]["Z"] - ini_c)] 
+        df_dist.loc[len(df_dist)] = [-(df.loc[i]["X"] + df.loc[i]["Y"] + 2.5), -(df.loc[i]["X"] - df.loc[i]["Y"] - 2.5), -(df.loc[i]["X"]-df.loc[i]["Z"] - 2.5)] 
     else:
         df_dist.loc[len(df_dist)] = [-(df.loc[i]["X"] + df.loc[i]["Y"]), -(df.loc[i]["X"] - df.loc[i]["Y"]), -(df.loc[i]["X"]-df.loc[i]["Z"])]
 
-    #código G
-    df_dist["Movimiento X"] = df_dist["Movimiento X"]*0.2
-    df_dist["Movimiento Y"] = df_dist["Movimiento Y"]*(-0.2)
-    df_dist["Movimiento Z"] = df_dist["Movimiento Z"]*(-0.2)
+    # Cambio a código G
+    df_dist["Carro A"] = df_dist["Carro A"]*0.2
+    df_dist["Carro B"] = df_dist["Carro B"]*(-0.2)
+    df_dist["Carro C"] = df_dist["Carro C"]*(-0.2)
     return df_dist
+
+
+def graficar_puntos(df):
+    plt.style.use("ggplot")
+    st.subheader("Gráfica de los puntos generados")
+    # Crear una gráfica de dispersión
+    plt.figure(figsize=(8, 8))
+    plt.scatter(df["X"], df["Y"], color='red', marker='o')
+    #plt.title("Gráfica de Dispersión")
+    #plt.xlabel("X")
+    #plt.ylabel("Y")
+    plt.grid(True)
+
+    # Mostrar la gráfica en Streamlit
+    st.pyplot(plt)
