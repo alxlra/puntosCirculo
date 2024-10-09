@@ -100,10 +100,11 @@ def calcular_distancias_motor(df, ini_a, ini_b, ini_c, offset=True):
     else:
         df_dist.loc[len(df_dist)] = [-(df.loc[i]["X"] + df.loc[i]["Y"]), -(df.loc[i]["X"] - df.loc[i]["Y"]), -(df.loc[i]["X"]-df.loc[i]["Z"])]
 
+    escala = 0.254
     # Cambio a código G
-    df_dist["Carro A"] = df_dist["Carro A"]*0.2
-    df_dist["Carro B"] = df_dist["Carro B"]*(-0.2)
-    df_dist["Carro C"] = df_dist["Carro C"]*(-0.2)
+    df_dist["Carro A"] = df_dist["Carro A"]*escala
+    df_dist["Carro B"] = df_dist["Carro B"]*(-escala)
+    df_dist["Carro C"] = df_dist["Carro C"]*(-escala)
     return df_dist
 
 
