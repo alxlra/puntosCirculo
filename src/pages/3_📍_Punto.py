@@ -8,22 +8,6 @@ from preferencias import leer_preferencias
 from calculos import *
 
 
-
-def graficar_puntos(df):
-    plt.style.use("ggplot")
-    st.subheader("Gráfica de los puntos generados")
-    # Crear una gráfica de dispersión
-    plt.figure(figsize=(8, 8))
-    plt.scatter(df["X"], df["Y"], color='red', marker='o')
-    #plt.title("Gráfica de Dispersión")
-    #plt.xlabel("X")
-    #plt.ylabel("Y")
-    plt.grid(True)
-
-    # Mostrar la gráfica en Streamlit
-    st.pyplot(plt)
-#--------------------
-
 # Leer y mostrar las preferencias guardadas
 preferencias = leer_preferencias()
 if not preferencias:
@@ -36,6 +20,7 @@ x_min = preferencias.get("x_min", 0.0)
 x_max = preferencias.get("x_max", 35.0)
 y_min = preferencias.get("y_min", 0.0)
 y_max = preferencias.get("y_max", 35.0)
+escala = preferencias.get("escala", 0.2)
 
 if not preferencias:
     st.error("No hay preferencias guardadas.", icon="ℹ")
@@ -55,7 +40,7 @@ if st.button("✔ Generar"):
     #cálculos
     df = calcular_punto(center_x, center_y, center_z, levantar)    
     df_dist = calcular_distancias(df)
-    df_dist_motor = calcular_distancias_motor(df, ini_b, ini_a, ini_c, offset)
+    df_dist_motor = calcular_distancias_motor(df, escala)
 
 
     st.divider()
