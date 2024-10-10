@@ -3,4 +3,4 @@ pandas
 matplotlib
 pytest
 streamlit-drawable-canvas
-opencv-python
+opencv-contrib-python
