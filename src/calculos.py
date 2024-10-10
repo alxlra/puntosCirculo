@@ -8,7 +8,6 @@ def calcular_puntos(center_x, center_y, z, radio, puntos, levantar=False):
     """Calcula los puntos en un círculo basado en las coordenadas del centro, el radio y la cantidad de puntos."""
     angulo_lados = (2 * math.pi) / puntos
     df = pd.DataFrame(columns=["X", "Y", "Z"])
-
     z_up = z+1
     if levantar:
         x = center_x + radio * math.cos(angulo_lados * 0)
@@ -25,6 +24,8 @@ def calcular_puntos(center_x, center_y, z, radio, puntos, levantar=False):
     df.loc[len(df)] = [x, y, z]  # Movimiento inicial
     if levantar:
         df.loc[len(df)] = [x, y, z_up]  # Movimiento inicial
+
+    #df["X"] = -df["X"]
     return df
 
 # Función para generar puntos en el perímetro del círculo
@@ -77,34 +78,42 @@ def calcular_distancias(df):
     return df_dist
 
 # Función para calcular las distancias de movimiento entre los puntos
-def calcular_distancias_motor(df, ini_a, ini_b, ini_c, offset=True):
+def calcular_distancias_motor(df, escala=0.2):
     """Calcula las distancias de movimiento entre cada punto."""
+    # Crear un DataFrame para almacenar los movimientos
     df_dist = pd.DataFrame(columns=["Carro A", "Carro B", "Carro C"])
-    puntos = len(df)
-    i=0
-    if offset:
-        df_dist.loc[len(df_dist)] = [df.loc[i]["X"] + df.loc[i]["Y"] + 2.5, df.loc[i]["X"] - df.loc[i]["Y"] - 2.5, df.loc[i]["X"]-df.loc[i]["Z"] - 2.5] 
-    else:
-        df_dist.loc[len(df_dist)] = [df.loc[i]["X"] + df.loc[i]["Y"], df.loc[i]["X"] - df.loc[i]["Y"] , df.loc[i]["X"]-df.loc[i]["Z"]] 
-    
-    for i in range(len(df)-1):
-        dist_x = df.loc[(i + 1) % puntos]["X"] - df.loc[i]["X"]
-        dist_y = df.loc[(i + 1) % puntos]["Y"] - df.loc[i]["Y"]
-        dist_z = df.loc[(i + 1) % puntos]["Z"] - df.loc[i]["Z"]
-        df_dist.loc[len(df_dist)] = [dist_x+dist_y, dist_x-dist_y, dist_x- dist_z]
 
-    # Regreso al punto inicial
-    i=0
-    if offset:
-        df_dist.loc[len(df_dist)] = [-(df.loc[i]["X"] + df.loc[i]["Y"] + 2.5), -(df.loc[i]["X"] - df.loc[i]["Y"] - 2.5), -(df.loc[i]["X"]-df.loc[i]["Z"] - 2.5)] 
-    else:
-        df_dist.loc[len(df_dist)] = [-(df.loc[i]["X"] + df.loc[i]["Y"]), -(df.loc[i]["X"] - df.loc[i]["Y"]), -(df.loc[i]["X"]-df.loc[i]["Z"])]
+    # Calcular el movimiento inicial del origen al primer punto
+    dist_x = df.loc[0]["X"] - 0  # Del origen al primer punto
+    dist_y = df.loc[0]["Y"] - 0
+    dist_z = df.loc[0]["Z"] - 0
+    mov_A = (dist_x + dist_y) * escala
+    mov_B = (dist_x - dist_y) * -escala
+    mov_C = (dist_x - dist_z) * -escala
+    df_dist.loc[len(df_dist)] = [mov_A, mov_B, mov_C]
 
-    escala = 0.254
-    # Cambio a código G
-    df_dist["Carro A"] = df_dist["Carro A"]*escala
-    df_dist["Carro B"] = df_dist["Carro B"]*(-escala)
-    df_dist["Carro C"] = df_dist["Carro C"]*(-escala)
+    # Calcular los movimientos entre los puntos
+    num_puntos = len(df)
+    for i in range(num_puntos-1):
+        next_index = (i + 1) % num_puntos  # Para cerrar el polígono al volver al primer punto
+        dist_x = df.loc[next_index]["X"] - df.loc[i]["X"]
+        dist_y = df.loc[next_index]["Y"] - df.loc[i]["Y"]
+        dist_z = df.loc[next_index]["Z"] - df.loc[i]["Z"]
+        
+        mov_A = (dist_x + dist_y) * escala
+        mov_B = (dist_x - dist_y) * -escala
+        mov_C = (dist_x - dist_z) * -escala
+        df_dist.loc[len(df_dist)] = [mov_A, mov_B, mov_C]
+
+    dist_x = 0-df.loc[0]["X"]  # Del primer punto al origen
+    dist_y = 0-df.loc[0]["Y"] 
+    dist_z = 0-df.loc[0]["Z"] 
+    mov_A = (dist_x + dist_y) * escala
+    mov_B = (dist_x - dist_y) * -escala
+    mov_C = (dist_x - dist_z) * -escala
+    df_dist.loc[len(df_dist)] = [mov_A, mov_B, mov_C]
+
+
     return df_dist
 
 

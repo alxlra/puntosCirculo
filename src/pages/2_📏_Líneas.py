@@ -19,6 +19,7 @@ x_max = preferencias.get("x_max", 35.0)
 y_min = preferencias.get("y_min", 0.0)
 y_max = preferencias.get("y_max", 35.0)
 z_min = preferencias.get("z_min", 0.0)
+escala = preferencias.get("escala", 0.2)
 
 if not preferencias:
     st.error("No hay preferencias guardadas.", icon="ℹ")
@@ -39,7 +40,7 @@ if st.button("✔ Generar línea"):
     #cálculos
     df = calcular_linea(x_start, y_start, x_end, y_end, z_min, levantar)
     df_dist = calcular_distancias(df)
-    df_dist_motor = calcular_distancias_motor(df, ini_b, ini_a, ini_c, offset)
+    df_dist_motor = calcular_distancias_motor(df, escala)
 
     col1,col2 = st.columns(2)
     with col1:

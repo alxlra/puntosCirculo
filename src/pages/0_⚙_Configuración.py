@@ -20,13 +20,14 @@ st.title("⚙ Configuración de Tripteron")
 st.subheader("Limites de trabajo")
 col1,col2 = st.columns(2)
 with col1:
-    x_min = st.number_input("Límite mínimo X:", min_value=0.0, max_value=30.0, value=preferencias.get("x_min", 8.125), format="%.3f", step=0.5)
-    y_min = st.number_input("Límite mínimo Y:", min_value=0.0, max_value=30.0, value=preferencias.get("y_min", 8.125), format="%.3f", step=0.5)
-    z_min = st.number_input("Límite mínimo Z:", min_value=0.0, max_value=30.0, value=preferencias.get("z_min", 5.625), format="%.3f", step=0.5)
+    x_min = st.number_input("Límite mínimo X:", value=preferencias.get("x_min", 0), format="%.3f", step=0.5)
+    y_min = st.number_input("Límite mínimo Y:", value=preferencias.get("y_min", 0), format="%.3f", step=0.5)
+    z_min = st.number_input("Límite mínimo Z:", value=preferencias.get("z_min", 0), format="%.3f", step=0.5)
 with col2:
     x_max = st.number_input("Límite máximo X:", min_value=0.0, max_value=40.0, value=preferencias.get("x_max", 35.625), format="%.3f", step=0.5)
     y_max = st.number_input("Límite máximo Y:", min_value=0.0, max_value=30.0, value=preferencias.get("y_max", 21.75), format="%.3f", step=0.5)
 
+escala = st.number_input("Factor de escala:", min_value=0.1, max_value=10.0, value=preferencias.get("escala", 0.2), format="%.3f", step=0.1)
 st.divider()
 st.subheader("Posiciones de carros", help="Orden: [B] &nbsp;&nbsp; [C] [A]")
 
@@ -42,7 +43,8 @@ if st.button("💾 Guardar preferencias"):
     preferencias = {
         'x_min': x_min, 'y_min': y_min, 'z_min': z_min,
         'x_max': x_max, 'y_max': y_max,
-        'ini_a': ini_a, 'ini_b': ini_b, 'ini_c': ini_c
+        'ini_a': ini_a, 'ini_b': ini_b, 'ini_c': ini_c,
+        'escala': escala
     }
     
     # Guardar las preferencias en un archivo JSON
