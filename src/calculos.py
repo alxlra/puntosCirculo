@@ -7,20 +7,21 @@ from matplotlib import pyplot as plt
 def calcular_puntos(center_x, center_y, z, radio, puntos, levantar=False):
     """Calcula los puntos en un círculo basado en las coordenadas del centro, el radio y la cantidad de puntos."""
     angulo_lados = (2 * math.pi) / puntos
+    angulo_incial = math.pi*(0.75+0.5)
     df = pd.DataFrame(columns=["X", "Y", "Z"])
     z_up = z+1
     if levantar:
-        x = center_x + radio * math.cos(angulo_lados * 0)
-        y = center_y + radio * math.sin(angulo_lados * 0)
+        x = center_x + radio * math.cos(angulo_incial+angulo_lados * 0)
+        y = center_y + radio * math.sin(angulo_incial+angulo_lados * 0)
         df.loc[len(df)] = [x, y, z_up]  # Movimiento inicial
 
     for i in range(puntos):
-        x = center_x + radio * math.cos(angulo_lados * i)
-        y = center_y + radio * math.sin(angulo_lados * i)
+        x = center_x + radio * math.cos(angulo_incial+angulo_lados * i)
+        y = center_y + radio * math.sin(angulo_incial+angulo_lados * i)
         df.loc[len(df)] = [x, y, z]
 
-    x = center_x + radio * math.cos(angulo_lados * 0)
-    y = center_y + radio * math.sin(angulo_lados * 0)
+    x = center_x + radio * math.cos(angulo_incial+angulo_lados * 0)
+    y = center_y + radio * math.sin(angulo_incial+angulo_lados * 0)
     df.loc[len(df)] = [x, y, z]  # Movimiento inicial
     if levantar:
         df.loc[len(df)] = [x, y, z_up]  # Movimiento inicial
@@ -87,9 +88,9 @@ def calcular_distancias_motor(df, escala=0.2):
     dist_x = df.loc[0]["X"] - 0  # Del origen al primer punto
     dist_y = df.loc[0]["Y"] - 0
     dist_z = df.loc[0]["Z"] - 0
-    mov_A = (dist_x + dist_y) * escala
-    mov_B = (dist_x - dist_y) * -escala
-    mov_C = (dist_x - dist_z) * -escala
+    mov_A = (dist_x + dist_y) / escala
+    mov_B = (dist_x - dist_y) / escala
+    mov_C = (dist_x - dist_z) / escala
     df_dist.loc[len(df_dist)] = [mov_A, mov_B, mov_C]
 
     # Calcular los movimientos entre los puntos
@@ -100,18 +101,19 @@ def calcular_distancias_motor(df, escala=0.2):
         dist_y = df.loc[next_index]["Y"] - df.loc[i]["Y"]
         dist_z = df.loc[next_index]["Z"] - df.loc[i]["Z"]
         
-        mov_A = (dist_x + dist_y) * escala
-        mov_B = (dist_x - dist_y) * -escala
-        mov_C = (dist_x - dist_z) * -escala
+        mov_A = (dist_x + dist_y) / escala
+        mov_B = (dist_x - dist_y) / escala
+        mov_C = (dist_x - dist_z) / escala
         df_dist.loc[len(df_dist)] = [mov_A, mov_B, mov_C]
 
-    dist_x = 0-df.loc[0]["X"]  # Del primer punto al origen
-    dist_y = 0-df.loc[0]["Y"] 
-    dist_z = 0-df.loc[0]["Z"] 
-    mov_A = (dist_x + dist_y) * escala
-    mov_B = (dist_x - dist_y) * -escala
-    mov_C = (dist_x - dist_z) * -escala
-    df_dist.loc[len(df_dist)] = [mov_A, mov_B, mov_C]
+    #dist_x = df.loc[0]["X"]-df.loc[len(df)-1]["X"]  # Del primer punto al origen
+    #dist_y = -df.loc[0]["Y"] -df.loc[len(df)-1]["Y"]
+    #dist_z = df.loc[0]["Z"] -df.loc[len(df)-1]["Z"]
+    #mov_A = (dist_x + dist_y) / escala
+    #mov_B = (dist_x - dist_y) / escala
+    #mov_C = (dist_x - dist_z) / escala
+    #df_dist.loc[len(df_dist)] = [mov_A, mov_B, mov_C]
+    df_dist.loc[len(df_dist)] = -df_dist.loc[0]
 
 
     return df_dist
