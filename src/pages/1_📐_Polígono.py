@@ -39,30 +39,36 @@ with col2:
 
 col1,col2 = st.columns(2)
 with col1:
-    radio = st.number_input("Radio:", min_value=1.0, max_value=10.0, value=4.0, format="%.2f", step=0.5)
+    radio = st.number_input("Radio:", min_value=0.5, max_value=10.0, value=4.0, format="%.2f", step=0.5)
 with col2:
-    puntos = st.slider("Número de puntos:", min_value=2, max_value=20, value=10)
+    puntos = st.slider("Número de puntos:", min_value=2, max_value=20, value=4)
 levantar = st.checkbox("Levantar pluma al dibujar", value=True, help="Levanta la pluma al inicio y al final del dibujo.")
 offset = st.checkbox("Quitar offset de carros", value=False, help="Quita el offset del inicio de los carros en el código G.")
 
 
 # Guardar los datos en la sesión
 #
-#if "df" not in st.session_state:
-#    st.session_state.df = pd.DataFrame(columns=["X", "Y", "Z"])
-#
-#if "df_dist" not in st.session_state:
-#    st.session_state.df_dist = pd.DataFrame(columns=["Movimiento X", "Movimiento Y", "Movimiento Z"])
-#
-##if "df_dist_motor" not in st.session_state:
-    #st.session_state.df_dist_motor = pd.DataFrame(columns=["Movimiento X", "Movimiento Y", "Movimiento Z"])
+if "df" not in st.session_state:
+    st.session_state.df = pd.DataFrame(columns=["X", "Y", "Z"])
+
+if "df_dist_motor" not in st.session_state:
+    st.session_state.df_dist_motor = pd.DataFrame(columns=["Carro A", "Carro B", "Carro C"])
+
+if "df_dist_suma" not in st.session_state:
+    st.session_state.df_dist_suma = pd.DataFrame(columns=["Carro A", "Carro B", "Carro C"])
 
 if st.button("✔ Generar puntos"):
     #cálculos
     df = calcular_puntos(center_x, center_y, center_z, radio, puntos, levantar)
-    df_dist_motor = calcular_distancias_motor(df, escala)
+    df_dist_motor, df_dist_suma = calcular_distancias_motor(df, escala)
+    st.session_state.df = df
+    st.session_state.df_dist_motor = df_dist_motor
+    st.session_state.df_dist_suma = df_dist_suma
 
-
+if "df" in st.session_state and "df_dist_motor" in st.session_state:
+    df = st.session_state.df
+    df_dist_motor = st.session_state.df_dist_motor
+    df_dist_suma = st.session_state.df_dist_suma
     st.divider()
 
     st.write("Puntos generados: ", str(len(df)))
@@ -80,7 +86,7 @@ if st.button("✔ Generar puntos"):
             mime="text/csv"
         )
     with col2:
-        st.subheader("Carros código G")
+        st.subheader("Carros código G 👼")
         st.dataframe(df_dist_motor)
         #st.button("Descargar movimientos", df.to_csv("movimientos.csv", index=False))
         csv3 = df_dist_motor.to_csv(index=False)  # Convertir el dataframe a CSV
@@ -90,8 +96,31 @@ if st.button("✔ Generar puntos"):
             file_name="movimientos_motor.csv",
             mime="text/csv"
         )
+    #with col3:
+    #    st.subheader("Carros posiciones 👼")
+    #    st.dataframe(df_dist_suma)
     st.divider()
     
     #gráfica de los puntos
     graficar_puntos(df)
+
+    st.divider()
+    #indice = st.slider('Selecciona el tiempo a graficar', 0, len(df_dist_suma)-1)
+
+    # Obtener los datos del renglón seleccionado
+    #puntos = df_dist_suma[['Carro B', 'Carro C', 'Carro A']].iloc[indice]
+
+    # Obtener el mínimo y máximo del DataFrame df_dist_motor
+    #min_valor = df_dist_suma.min().min()  # Valor mínimo entre todos los carros
+    #max_valor = df_dist_suma.max().max()  # Valor máximo entre todos los carros
+
+    
+    # Crear la gráfica
+    #fig, ax = plt.subplots()
+    #ax.scatter(puntos, [0,0,0], c=['red', 'green', 'blue'])
+    #ax.set_xlim(min_valor, max_valor)
+    #ax.set_xlabel('Carros')
+    #ax.set_ylabel('Valores')
+    #ax.set_title(f'Valores de los carros - Tiempo {indice}')
+    #st.pyplot(fig)
         
