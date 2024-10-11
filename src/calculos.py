@@ -79,10 +79,11 @@ def calcular_distancias(df):
     return df_dist
 
 # Función para calcular las distancias de movimiento entre los puntos
-def calcular_distancias_motor(df, escala=0.2):
+def calcular_distancias_motor(df, escala=0.2, ini_a=0.0, ini_b=0, ini_c=0):
     """Calcula las distancias de movimiento entre cada punto."""
     # Crear un DataFrame para almacenar los movimientos
     df_dist = pd.DataFrame(columns=["Carro A", "Carro B", "Carro C"])
+    df_last_dist = pd.DataFrame(columns=["Carro A", "Carro B", "Carro C"])
     last_dist = [0,0,0]
 
     # Calcular el movimiento inicial del origen al primer punto
@@ -94,6 +95,7 @@ def calcular_distancias_motor(df, escala=0.2):
     mov_C = (dist_x - dist_z) / escala
     df_dist.loc[len(df_dist)] = [mov_A, mov_B, mov_C]
     last_dist = [last_dist[0]+mov_A, last_dist[1]+mov_B, last_dist[2]+mov_C]
+    df_last_dist.loc[len(df_last_dist)] = last_dist
 
     # Calcular los movimientos entre los puntos
     num_puntos = len(df)
@@ -108,6 +110,7 @@ def calcular_distancias_motor(df, escala=0.2):
         mov_C = (dist_x - dist_z) / escala
         df_dist.loc[len(df_dist)] = [mov_A, mov_B, mov_C]
         last_dist = [last_dist[0]+mov_A, last_dist[1]+mov_B, last_dist[2]+mov_C]
+        df_last_dist.loc[len(df_last_dist)] = last_dist
 
     #dist_x = df.loc[0]["X"]-df.loc[len(df)-1]["X"]  # Del primer punto al origen
     #dist_y = -df.loc[0]["Y"] -df.loc[len(df)-1]["Y"]
@@ -116,10 +119,18 @@ def calcular_distancias_motor(df, escala=0.2):
     #mov_B = (dist_x - dist_y) / escala
     #mov_C = (dist_x - dist_z) / escala
     #df_dist.loc[len(df_dist)] = [mov_A, mov_B, mov_C]
-    df_dist.loc[len(df_dist)] = [-last_dist[0], -last_dist[1], -last_dist[2]]
+    last_dist = [-last_dist[0], -last_dist[1], -last_dist[2]]
+    
+    df_last_dist.loc[len(df_last_dist)] = [0,0,0]
+    df_dist.loc[len(df_dist)] = [last_dist[0], last_dist[1], last_dist[2]]
+    
+    #sumar offsets
+    df_last_dist["Carro A"] = df_last_dist["Carro A"] + ini_a
+    df_last_dist["Carro B"] = df_last_dist["Carro B"] + ini_b
+    df_last_dist["Carro C"] = df_last_dist["Carro C"] + ini_c
+    df_last_dist = df_last_dist[["Carro B", "Carro C", "Carro A"]]
 
-
-    return df_dist
+    return df_dist, df_last_dist
 
 
 def graficar_puntos(df):

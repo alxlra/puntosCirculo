@@ -43,7 +43,7 @@ if st.button("✔ Generar línea"):
     #cálculos
     df = calcular_linea(x_start, y_start, x_end, y_end, z_min, levantar)
     df_dist = calcular_distancias(df)
-    df_dist_motor = calcular_distancias_motor(df, escala)
+    df_dist_motor, df_dist_suma = calcular_distancias_motor(df, escala)
 
     col1,col2 = st.columns(2)
     with col1:
@@ -59,7 +59,7 @@ if st.button("✔ Generar línea"):
         )
     
     with col2:
-        st.subheader("Carros código G")
+        st.subheader("Carros código G 👼")
         st.dataframe(df_dist_motor)
         #st.button("Descargar movimientos", df.to_csv("movimientos.csv", index=False))
         csv3 = df_dist_motor.to_csv(index=False)  # Convertir el dataframe a CSV
