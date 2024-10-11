@@ -17,7 +17,7 @@ y_min = preferencias.get("y_min", 0.0)
 y_max = preferencias.get("y_max", 35.0)
 
 st.title("⚙ Configuración de Tripteron")
-st.subheader("Limites de trabajo (pulgadas)")
+st.subheader("Limites de trabajo")
 col1,col2 = st.columns(2)
 with col1:
     x_min = st.number_input("Límite mínimo X:", value=preferencias.get("x_min", 0), format="%.3f", step=0.5)
@@ -27,7 +27,7 @@ with col2:
     x_max = st.number_input("Límite máximo X:", min_value=0.0, max_value=40.0, value=preferencias.get("x_max", 35.625), format="%.3f", step=0.5)
     y_max = st.number_input("Límite máximo Y:", min_value=0.0, max_value=30.0, value=preferencias.get("y_max", 21.75), format="%.3f", step=0.5)
 
-escala = st.number_input("Factor de escala:", min_value=0.1, max_value=10.0, value=preferencias.get("escala", 0.2), format="%.3f", step=0.1)
+escala = st.number_input("Un movimiento de carro equivale a:", min_value=0.1, max_value=10.0, value=preferencias.get("escala", 0.2), format="%.3f", step=0.1)
 st.divider()
 st.subheader("Posiciones de carros 👼", help="Orden: [B] &nbsp;&nbsp; [C] [A]")
 

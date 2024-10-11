@@ -42,6 +42,7 @@ with col1:
     radio = st.number_input("Radio:", min_value=0.5, max_value=10.0, value=4.0, format="%.2f", step=0.5)
 with col2:
     puntos = st.slider("Número de puntos:", min_value=2, max_value=20, value=4)
+    angulo_inicial = st.slider("Ángulo incial:", min_value=0, max_value=270, value=0, step=45)
 levantar = st.checkbox("Levantar pluma al dibujar", value=True, help="Levanta la pluma al inicio y al final del dibujo.")
 offset = st.checkbox("Quitar offset de carros", value=False, help="Quita el offset del inicio de los carros en el código G.")
 
@@ -59,7 +60,7 @@ if "df_dist_suma" not in st.session_state:
 
 if st.button("✔ Generar puntos"):
     #cálculos
-    df = calcular_puntos(center_x, center_y, center_z, radio, puntos, levantar)
+    df = calcular_puntos(center_x, center_y, center_z, radio, puntos, levantar, angulo_inicial)
     df_dist_motor, df_dist_suma = calcular_distancias_motor(df, escala)
     st.session_state.df = df
     st.session_state.df_dist_motor = df_dist_motor
