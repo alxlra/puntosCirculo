@@ -83,6 +83,7 @@ def calcular_distancias_motor(df, escala=0.2):
     """Calcula las distancias de movimiento entre cada punto."""
     # Crear un DataFrame para almacenar los movimientos
     df_dist = pd.DataFrame(columns=["Carro A", "Carro B", "Carro C"])
+    last_dist = [0,0,0]
 
     # Calcular el movimiento inicial del origen al primer punto
     dist_x = df.loc[0]["X"] - 0  # Del origen al primer punto
@@ -92,6 +93,7 @@ def calcular_distancias_motor(df, escala=0.2):
     mov_B = (dist_x - dist_y) / escala
     mov_C = (dist_x - dist_z) / escala
     df_dist.loc[len(df_dist)] = [mov_A, mov_B, mov_C]
+    last_dist = [last_dist[0]+mov_A, last_dist[1]+mov_B, last_dist[2]+mov_C]
 
     # Calcular los movimientos entre los puntos
     num_puntos = len(df)
@@ -105,6 +107,7 @@ def calcular_distancias_motor(df, escala=0.2):
         mov_B = (dist_x - dist_y) / escala
         mov_C = (dist_x - dist_z) / escala
         df_dist.loc[len(df_dist)] = [mov_A, mov_B, mov_C]
+        last_dist = [last_dist[0]+mov_A, last_dist[1]+mov_B, last_dist[2]+mov_C]
 
     #dist_x = df.loc[0]["X"]-df.loc[len(df)-1]["X"]  # Del primer punto al origen
     #dist_y = -df.loc[0]["Y"] -df.loc[len(df)-1]["Y"]
@@ -113,7 +116,7 @@ def calcular_distancias_motor(df, escala=0.2):
     #mov_B = (dist_x - dist_y) / escala
     #mov_C = (dist_x - dist_z) / escala
     #df_dist.loc[len(df_dist)] = [mov_A, mov_B, mov_C]
-    df_dist.loc[len(df_dist)] = -df_dist.loc[0]
+    df_dist.loc[len(df_dist)] = [-last_dist[0], -last_dist[1], -last_dist[2]]
 
 
     return df_dist
