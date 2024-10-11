@@ -4,10 +4,11 @@ import pandas as pd
 from matplotlib import pyplot as plt
 
 # Función para generar puntos en el perímetro del círculo
-def calcular_puntos(center_x, center_y, z, radio, puntos, levantar=False):
+def calcular_puntos(center_x, center_y, z, radio, puntos, levantar=False, angulo_incial=0):
     """Calcula los puntos en un círculo basado en las coordenadas del centro, el radio y la cantidad de puntos."""
-    angulo_lados = (2 * math.pi) / puntos
-    angulo_incial = math.pi*(0.75+0.5)
+    angulo_lados = (2 * math.pi) / puntos                                                                                                                                                                        
+    #angulo_incial = math.pi*(0.75+0.5)
+    angulo_incial = math.radians(angulo_incial)
     df = pd.DataFrame(columns=["X", "Y", "Z"])
     z_up = z+1
     if levantar:
@@ -90,9 +91,9 @@ def calcular_distancias_motor(df, escala=0.2, ini_a=0.0, ini_b=0, ini_c=0):
     dist_x = df.loc[0]["X"] - 0  # Del origen al primer punto
     dist_y = df.loc[0]["Y"] - 0
     dist_z = df.loc[0]["Z"] - 0
-    mov_A = (dist_x + dist_y) / escala
-    mov_B = (dist_x - dist_y) / escala
-    mov_C = (dist_x - dist_z) / escala
+    mov_A = (dist_x - dist_y) / -escala
+    mov_B = (dist_x + dist_y) / escala
+    mov_C = (dist_x - dist_z) / -escala
     df_dist.loc[len(df_dist)] = [mov_A, mov_B, mov_C]
     last_dist = [last_dist[0]+mov_A, last_dist[1]+mov_B, last_dist[2]+mov_C]
     df_last_dist.loc[len(df_last_dist)] = last_dist
@@ -105,9 +106,9 @@ def calcular_distancias_motor(df, escala=0.2, ini_a=0.0, ini_b=0, ini_c=0):
         dist_y = df.loc[next_index]["Y"] - df.loc[i]["Y"]
         dist_z = df.loc[next_index]["Z"] - df.loc[i]["Z"]
         
-        mov_A = (dist_x + dist_y) / escala
-        mov_B = (dist_x - dist_y) / escala
-        mov_C = (dist_x - dist_z) / escala
+        mov_A = (dist_x - dist_y) / -escala
+        mov_B = (dist_x + dist_y) / escala
+        mov_C = (dist_x - dist_z) / -escala
         df_dist.loc[len(df_dist)] = [mov_A, mov_B, mov_C]
         last_dist = [last_dist[0]+mov_A, last_dist[1]+mov_B, last_dist[2]+mov_C]
         df_last_dist.loc[len(df_last_dist)] = last_dist
@@ -146,3 +147,10 @@ def graficar_puntos(df):
 
     # Mostrar la gráfica en Streamlit
     st.pyplot(plt)
+
+def convertir_unidad(original, unidad, escala=1.0):
+    if unidad == 0: #Centímetros a angelitos
+        nueva = original / escala
+    else:
+        nueva = original * escala
+    return float(nueva)
