@@ -9,6 +9,7 @@ escala = preferencias.get("escala", 1.0)
 st.title("👼 Conversor de unidades")
 st.write("Convierte entre centímetros y angelitos. El dibujo y las coordenadas se realizan en centímetros, pero los motores se mueven en angelitos.")
 st.markdown("La escala se modifica en [Configuración](./Configuración)")
+
 st.write(1," movimiento de carro = ", escala," unidades de dibujo")
 
 opciones = ["Centímetros a Angelitos", "Angelitos a Centímetros"]

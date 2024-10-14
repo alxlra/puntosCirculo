@@ -11,8 +11,13 @@ st.write("Selecciona del menú de la izquierda el tipo de movimiento que deseas 
 preferencias = leer_preferencias()
 if not preferencias:
     st.error("No hay preferencias guardadas.", icon="ℹ")
+    st.page_link("./pages/0_⚙_Configuración.py", label="Configuración", icon="⚙")
 else:
     st.success("Se encontró un archivo de preferencias", icon="✔")
-    st.json(preferencias)
+    st.page_link("./pages/0_⚙_Configuración.py", label="Configuración", icon="⚙")
 
-st.image("src/img/robot.jpg", use_column_width=True)
+    col1, col2 = st.columns(2)
+    with col1:
+        st.json(preferencias)
+    with col2:
+        st.image("src/img/robot.jpg", use_column_width=True)

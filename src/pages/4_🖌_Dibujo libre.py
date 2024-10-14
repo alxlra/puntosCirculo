@@ -30,6 +30,9 @@ x_max = preferencias.get("x_max", 35.0)
 y_min = preferencias.get("y_min", 0.0)
 y_max = preferencias.get("y_max", 35.0)
 escala = preferencias.get("escala", 0.2)
+ini_x = preferencias.get("ini_x", 8.125)
+ini_y = preferencias.get("ini_y", 8.125)
+ini_z = preferencias.get("ini_z", 5.625)
 
 if not preferencias:
     st.error("No hay preferencias guardadas.", icon="ℹ")
@@ -53,9 +56,10 @@ canvas_result = st_canvas(
     key="canvas",
 )
 levantar = st.checkbox("Levantar pluma al dibujar", value=True, help="Levanta la pluma al inicio y al final del dibujo.")
+#strInicio = "Iniciar en (X:"+ str(ini_x)+", Y:"+str(ini_y)+", Z:"+str(ini_z)+")"
+#offset = st.checkbox(strInicio, value=False, help="Se suma el punto de origen")
 
-if st.button("✔ Generar puntos"):
-    
+if st.button("✔ Generar puntos"):    
     # 1. Cargar imagen en escala de grises
     img = canvas_result.image_data
     img = np.array(img, dtype=np.uint8).copy()
