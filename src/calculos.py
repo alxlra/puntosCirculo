@@ -91,9 +91,9 @@ def calcular_distancias_motor(df, escala=0.2, ini_a=0.0, ini_b=0, ini_c=0):
     dist_x = df.loc[0]["X"] - 0  # Del origen al primer punto
     dist_y = df.loc[0]["Y"] - 0
     dist_z = df.loc[0]["Z"] - 0
-    mov_A = (dist_x - dist_y) / -escala
+    mov_A = (dist_x - dist_y) / escala
     mov_B = (dist_x + dist_y) / escala
-    mov_C = (dist_x - dist_z) / -escala
+    mov_C = (dist_x - dist_z) / escala
     df_dist.loc[len(df_dist)] = [mov_A, mov_B, mov_C]
     last_dist = [last_dist[0]+mov_A, last_dist[1]+mov_B, last_dist[2]+mov_C]
     df_last_dist.loc[len(df_last_dist)] = last_dist
@@ -106,9 +106,9 @@ def calcular_distancias_motor(df, escala=0.2, ini_a=0.0, ini_b=0, ini_c=0):
         dist_y = df.loc[next_index]["Y"] - df.loc[i]["Y"]
         dist_z = df.loc[next_index]["Z"] - df.loc[i]["Z"]
         
-        mov_A = (dist_x - dist_y) / -escala
+        mov_A = (dist_x - dist_y) / escala
         mov_B = (dist_x + dist_y) / escala
-        mov_C = (dist_x - dist_z) / -escala
+        mov_C = (dist_x - dist_z) / escala
         df_dist.loc[len(df_dist)] = [mov_A, mov_B, mov_C]
         last_dist = [last_dist[0]+mov_A, last_dist[1]+mov_B, last_dist[2]+mov_C]
         df_last_dist.loc[len(df_last_dist)] = last_dist
@@ -130,6 +130,10 @@ def calcular_distancias_motor(df, escala=0.2, ini_a=0.0, ini_b=0, ini_c=0):
     df_last_dist["Carro B"] = df_last_dist["Carro B"] + ini_b
     df_last_dist["Carro C"] = df_last_dist["Carro C"] + ini_c
     df_last_dist = df_last_dist[["Carro B", "Carro C", "Carro A"]]
+
+    df_dist["Carro A"] = -df_dist["Carro A"]
+    df_dist["Carro C"] = -df_dist["Carro C"]
+
 
     return df_dist, df_last_dist
 
@@ -154,3 +158,10 @@ def convertir_unidad(original, unidad, escala=1.0):
     else:
         nueva = original * escala
     return float(nueva)
+
+def write_gcode(df, file_name, speed):
+    file_name="src/files/"+file_name
+    with open(file_name, "w") as file:
+        for y, x, z in zip(df["Carro A"], df["Carro B"], df["Carro C"]):
+            file.write(f"G1 Y{y} X{x} Z{z} F{speed}\n")
+    return file_name
