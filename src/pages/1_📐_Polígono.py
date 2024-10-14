@@ -44,7 +44,7 @@ col1,col2 = st.columns(2)
 with col1:
     radio = st.number_input("Radio:", min_value=0.5, max_value=10.0, value=2.0, format="%.2f", step=0.5)
 with col2:
-    puntos = st.slider("Número de puntos:", min_value=2, max_value=20, value=4)
+    puntos = st.slider("Número de puntos:", min_value=2, max_value=100, value=4)
     angulo_inicial = st.slider("Ángulo incial:", min_value=0, max_value=315, value=0, step=45)
 levantar = st.checkbox("Levantar pluma al dibujar", value=False, help="Levanta la pluma al inicio y al final del dibujo.")
 strInicio = "Iniciar en (X:"+ str(ini_x)+", Y:"+str(ini_y)+", Z:"+str(ini_z)+")"
