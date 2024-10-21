@@ -53,18 +53,19 @@ if "df_dist_suma_man" not in st.session_state:
     st.session_state.df_dist_suma_man = pd.DataFrame(columns=["Carro A", "Carro B", "Carro C"])
 
 
-col1,col2 = st.columns(2)
-if st.button("➕ Agregar punto"):
-    df = st.session_state.df_man
-    df.loc[len(df)] = [pos_x, pos_y, pos_z]
-    
-    st.session_state.df_man = df
-
-if st.button("➖ Quitar último"):
-    #quita último punto de df
-    df = st.session_state.df_man
-    df = df[:-1]
-    st.session_state.df_man = df
+col1,col2, col3 = st.columns(3)
+with col1:
+    if st.button("➕ Agregar punto"):
+        df = st.session_state.df_man
+        df.loc[len(df)] = [pos_x, pos_y, pos_z]
+        
+        st.session_state.df_man = df
+with col2:
+    if st.button("➖ Quitar último"):
+        #quita último punto de df
+        df = st.session_state.df_man
+        df = df[:-1]
+        st.session_state.df_man = df
 
 st.dataframe(st.session_state.df_man)
 
