@@ -3,3 +3,4 @@ src/__pycache__/
 src/pages/__pycache__/
 src/files/*
 !src/files/.gitkeep
+preferencias.json
